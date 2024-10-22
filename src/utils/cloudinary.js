@@ -13,11 +13,14 @@ const uploadOnCloudinary = async (localFilePath) => {
 
         const response = await cloudinary.uploader.upload(localFilePath);
         console.log("File uploaded successfully to cloudinary", response.url);
+        fs.unlinkSync(localFilePath);
         return response;
     } catch (e) {
-        fs.unlinkSync(localFilePath);
+        if (fs.existsSync(localFilePath)) {
+            fs.unlinkSync(localFilePath);
+        }
         return null;
     }
 };
 
-export {uploadOnCloudinary}
+export { uploadOnCloudinary };
